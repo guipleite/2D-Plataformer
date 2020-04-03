@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
  	public bool isGrounded;		// Se está no chão
  	public bool isJumping;		// Se está pulando
+    public bool isFacingRight;		// Se está olhando pra direita 
+    public static bool isAttacking;
 
  	private Vector3 moveDirection = Vector3.zero; // direção que o personagem se move
  	private CharacterController2D characterController;	//Componente do Char. Control
@@ -40,10 +42,14 @@ public class PlayerController : MonoBehaviour
 
         if(moveDirection.x < 0) {
             transform.eulerAngles = new Vector3(0,180,0);
+            isFacingRight = true;
+
         }
         else
         {
             transform.eulerAngles = new Vector3(0,0,0);
+            isFacingRight = true;
+
         }
         
 		if(isGrounded) {				// caso esteja no chão
@@ -59,8 +65,19 @@ public class PlayerController : MonoBehaviour
 			}
             else{
                 animator.SetBool("isJumping",false);
-            }
+                if(Input.GetButtonDown("Jump") && moveDirection.y > 0){//Soltando botão diminui pulo
+                    moveDirection.y *= 0.5f;}
 
+            }
+            if(Input.GetButton("Fire1"))
+			{ 
+                animator.SetBool("isAttacking",true);
+                isAttacking = true;
+
+            }
+            else{
+                animator.SetBool("isAttacking",false);
+            }
 		}
 
 		moveDirection.y -= gravity * Time.deltaTime;	// aplica a gravidade
