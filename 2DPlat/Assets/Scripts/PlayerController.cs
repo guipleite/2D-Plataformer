@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
  	private Vector3 moveDirection = Vector3.zero; // direção que o personagem se move
  	private CharacterController2D characterController;	//Componente do Char. Control
+    public LayerMask mask;  // para filtrar os layers a serem analisados
 
     void Start()
     {
@@ -80,6 +81,17 @@ public class PlayerController : MonoBehaviour
             }
 		}
 
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 4f, mask);
+        if (hit.collider != null && isGrounded) {
+           if(Input.GetAxis("Vertical") < 0 && Input.GetButtonDown("Jump")) {
+                moveDirection.y = -jumpSpeed;
+               StartCoroutine(PassPlatform(hit.transform.gameObject));
+           }
+       }
+ 
+
+
+
 		moveDirection.y -= gravity * Time.deltaTime;	// aplica a gravidade
 		characterController.move(moveDirection * Time.deltaTime);	// move personagem	
 
@@ -87,4 +99,12 @@ public class PlayerController : MonoBehaviour
 		isGrounded = flags.below;				// define flag de chão
 
     }
+    IEnumerator PassPlatform(GameObject platform) {
+       platform.GetComponent<EdgeCollider2D>().enabled = false;
+       yield return new WaitForSeconds(1.0f);
+       platform.GetComponent<EdgeCollider2D>().enabled = true;
+   }
+
 }
+
+
