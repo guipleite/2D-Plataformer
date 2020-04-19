@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using Prime31;
 
@@ -45,6 +46,8 @@ public class PlayerController : MonoBehaviour
         if(gameObject.transform.position.y<-5f)
         {
             Destroy(gameObject);
+            SceneManager.LoadScene("Death") ; 
+
 
         }
         if(Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.RightArrow)||Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.D)){

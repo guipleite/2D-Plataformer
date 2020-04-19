@@ -56,7 +56,9 @@
      <Compile Include="Assets\Scripts\box.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CharacterController2D.cs" />
+     <Compile Include="Assets\Scripts\GoMenu.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\StartGame.cs" />
      <None Include="Assets\Sprites\Font.txt" />
      <None Include="Assets\TileMaps\craftpix-781131-free-swamp-game-tileset-pixel-art\Font.txt" />
      <None Include="Assets\TileMaps\craftpix-781131-free-swamp-game-tileset-pixel-art\License.txt" />
