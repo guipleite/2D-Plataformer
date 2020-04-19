@@ -20,34 +20,28 @@ public class box : MonoBehaviour
 
     // Update is called once per frame
 
-    void OnTriggerEnter2D(Collider2D collision){
+    private void OnCollisionEnter2D(Collision2D  collision){
         Debug.Log("1");
         if (collision.gameObject.tag  == "Player"){
-                    Debug.Log("2");
-
-            if(PlayerController.isAttacking){
-                Debug.Log("3");
-
-                animator.SetBool("boxisDestroyed",true);
-                Destroy(gameObject);
-
-            }
+            StartCoroutine(Check_attack());
         }
     }
-    IEnumerator Check_attack()
-    {    Debug.Log("2");
-        if(PlayerController.isAttacking){
-            Debug.Log("3");
 
+    // Update is called once per frame
+    IEnumerator Check_attack()
+    {   
+        if(PlayerController.isAttacking){
             animator.SetBool("boxisDestroyed",true);
-            Debug.Log("4");
             yield return new WaitForSeconds(0.85f);
-        
             Destroy(gameObject);
         }
     }
     void Update()
-    {
-         StartCoroutine(Check_attack());
+    {   
+        // RaycastHit2D hit_box = Physics2D.Raycast(transform.position, -Vector2.up, aa, Player);        
+        // Debug.Log(hit_box.collider);
+        //     if (hit_box.collider != null && PlayerController.isAttacking) {
+        //         StartCoroutine(Check_attack());
+        //     }
     }
 }

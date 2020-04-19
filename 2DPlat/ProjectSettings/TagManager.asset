@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Platafroms
+  - box
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - 
   - Player
   - OneWayPLatform
-  - 
+  - box
   - 
   - 
   - 

@@ -20,17 +20,34 @@ public class PlayerController : MonoBehaviour
  	private Vector3 moveDirection = Vector3.zero; // direção que o personagem se move
  	private CharacterController2D characterController;	//Componente do Char. Control
     public LayerMask mask;  // para filtrar os layers a serem analisados
+    public GameObject plat; 
+
+    IEnumerator Check_attack()
+    {    
+        yield return new WaitForSeconds(0.3f);
+        isAttacking = false;
+    }
+    IEnumerator PassPlatform(GameObject platform) 
+    {
+       platform.GetComponent<EdgeCollider2D>().enabled = false;
+       yield return new WaitForSeconds(1.0f);
+       platform.GetComponent<EdgeCollider2D>().enabled = true;
+    }
 
     void Start()
     {
     	characterController = GetComponent<CharacterController2D>(); //identif. o componente
         animator = GetComponent<Animator>();
-
     }
 
     void Update()
     {
-        if(Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.RightArrow)){
+        if(gameObject.transform.position.y<-5f)
+        {
+            Destroy(gameObject);
+
+        }
+        if(Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.RightArrow)||Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.D)){
             animator.SetBool("isWalking",true);
         }
 
@@ -59,7 +76,6 @@ public class PlayerController : MonoBehaviour
 
 			if(Input.GetButton("Jump"))
 			{   
-                Debug.Log("jmp");
                 animator.SetBool("isJumping",true);
 				moveDirection.y = jumpSpeed;
 				isJumping = true;
@@ -74,36 +90,35 @@ public class PlayerController : MonoBehaviour
 			{ 
                 animator.SetBool("isAttacking",true);
                 isAttacking = true;
-
+                StartCoroutine(Check_attack());
             }
             else{
                 animator.SetBool("isAttacking",false);
             }
 		}
-
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 4f, mask);
-        if (hit.collider != null && isGrounded) {
-           if(Input.GetAxis("Vertical") < 0 && Input.GetButtonDown("Jump")) {
-                moveDirection.y = -jumpSpeed;
-               StartCoroutine(PassPlatform(hit.transform.gameObject));
-           }
-       }
  
-
-
-
 		moveDirection.y -= gravity * Time.deltaTime;	// aplica a gravidade
 		characterController.move(moveDirection * Time.deltaTime);	// move personagem	
 
 		flags = characterController.collisionState; 	// recupera flags
 		isGrounded = flags.below;				// define flag de chão
 
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 4f, mask);
+        if (hit.collider != null && isGrounded) {
+            // Debug.Log(hit.transform);
+            transform.SetParent(plat.transform);
+
+            if(Input.GetAxis("Vertical") < 0 && Input.GetButtonDown("Jump")) {
+                moveDirection.y = -jumpSpeed;
+               StartCoroutine(PassPlatform(hit.transform.gameObject));
+            }
+        }
+        else 
+        {
+        transform.SetParent(null);
+        }
+       
     }
-    IEnumerator PassPlatform(GameObject platform) {
-       platform.GetComponent<EdgeCollider2D>().enabled = false;
-       yield return new WaitForSeconds(1.0f);
-       platform.GetComponent<EdgeCollider2D>().enabled = true;
-   }
 
 }
 
