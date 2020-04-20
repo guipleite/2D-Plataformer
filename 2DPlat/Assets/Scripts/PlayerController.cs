@@ -15,18 +15,35 @@ public class PlayerController : MonoBehaviour
 
  	public bool isGrounded;		// Se está no chão
  	public bool isJumping;		// Se está pulando
-    public bool isFacingRight;		// Se está olhando pra direita 
+    public bool isFacingRight = false;		// Se está olhando pra direita 
     public static bool isAttacking;
 
  	private Vector3 moveDirection = Vector3.zero; // direção que o personagem se move
  	private CharacterController2D characterController;	//Componente do Char. Control
     public LayerMask mask;  // para filtrar os layers a serem analisados
+    public LayerMask Box;  // para filtrar os layers a serem analisados
+    public GameObject bbox;
     public GameObject plat; 
+    public static bool hitBox = false;
+    private AudioSource audioSource;
+    public AudioClip sound;
+    private bool SoundPlayed = false;
+
 
     IEnumerator Check_attack()
-    {    
-        yield return new WaitForSeconds(0.3f);
+    {            
+        yield return new WaitForSeconds(0.5f);
         isAttacking = false;
+    }
+    IEnumerator Check_Death()
+    {            
+        if (!SoundPlayed){
+            audioSource.PlayOneShot(sound);
+            SoundPlayed = true;
+        }
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
+        SceneManager.LoadScene("Death") ;
     }
     IEnumerator PassPlatform(GameObject platform) 
     {
@@ -39,17 +56,17 @@ public class PlayerController : MonoBehaviour
     {
     	characterController = GetComponent<CharacterController2D>(); //identif. o componente
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = sound;
     }
 
     void Update()
     {
         if(gameObject.transform.position.y<-5f)
         {
-            Destroy(gameObject);
-            SceneManager.LoadScene("Death") ; 
-
-
+            StartCoroutine(Check_Death());
         }
+
         if(Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.RightArrow)||Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.D)){
             animator.SetBool("isWalking",true);
         }
@@ -61,16 +78,23 @@ public class PlayerController : MonoBehaviour
         moveDirection.x = Input.GetAxis("Horizontal"); // recupera valor dos controles
         moveDirection.x *= walkSpeed;
 
-        if(moveDirection.x < 0) {
+        if(moveDirection.x < 0){
             transform.eulerAngles = new Vector3(0,180,0);
-            isFacingRight = true;
+            isFacingRight = false;
+            RaycastHit2D hit_box = Physics2D.Raycast(transform.position, Vector2.left, 0.8f, Box);     
 
+             if (hit_box.collider != null && isAttacking) {
+                hitBox = true;
+            }   
         }
-        else
-        {
+        if(moveDirection.x > 0){
             transform.eulerAngles = new Vector3(0,0,0);
             isFacingRight = true;
+            RaycastHit2D hit_boxr = Physics2D.Raycast(transform.position, Vector2.right, 0.8f, Box);     
 
+            if (hit_boxr.collider != null && isAttacking) {
+                hitBox = true;
+            }      
         }
         
 		if(isGrounded) {				// caso esteja no chão

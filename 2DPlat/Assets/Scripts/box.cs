@@ -8,40 +8,37 @@ public class box : MonoBehaviour
     // public bool isAttacking;
     public bool boxisDestroyed;
     public bool destroy = false;
-
-
     Animator animator;
-
+    public AudioSource audioSource;
+    public AudioClip sound;
+    private bool SoundPlayed = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = sound;
     }
 
     // Update is called once per frame
+    public IEnumerator DestroyBox()
+    {    
+        yield return new WaitForSeconds(0.2f);
 
-    private void OnCollisionEnter2D(Collision2D  collision){
-        Debug.Log("1");
-        if (collision.gameObject.tag  == "Player"){
-            StartCoroutine(Check_attack());
+        if (!SoundPlayed){
+            audioSource.PlayOneShot(sound);
+            SoundPlayed = true;
         }
-    }
 
-    // Update is called once per frame
-    IEnumerator Check_attack()
-    {   
-        if(PlayerController.isAttacking){
-            animator.SetBool("boxisDestroyed",true);
-            yield return new WaitForSeconds(0.85f);
-            Destroy(gameObject);
-        }
+        animator.SetBool("boxisDestroyed",true);
+        yield return new WaitForSeconds(0.85f);
+        Destroy(gameObject);
     }
+    
     void Update()
-    {   
-        // RaycastHit2D hit_box = Physics2D.Raycast(transform.position, -Vector2.up, aa, Player);        
-        // Debug.Log(hit_box.collider);
-        //     if (hit_box.collider != null && PlayerController.isAttacking) {
-        //         StartCoroutine(Check_attack());
-        //     }
+    {      
+        if(PlayerController.hitBox){
+            StartCoroutine(DestroyBox());
+        }
     }
 }
