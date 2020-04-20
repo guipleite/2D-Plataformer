@@ -25,13 +25,15 @@ public class box : MonoBehaviour
     {    
         yield return new WaitForSeconds(0.2f);
 
-        if (!SoundPlayed){
+        animator.SetBool("boxisDestroyed",true);
+        yield return new WaitForSeconds(0.1f);
+
+         if (!SoundPlayed){
             audioSource.PlayOneShot(sound);
             SoundPlayed = true;
         }
-
-        animator.SetBool("boxisDestroyed",true);
-        yield return new WaitForSeconds(0.85f);
+        yield return new WaitForSeconds(0.7f);
+        PlayerController.hitBox = false;
         Destroy(gameObject);
     }
     

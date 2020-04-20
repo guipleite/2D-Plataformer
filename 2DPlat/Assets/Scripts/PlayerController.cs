@@ -74,9 +74,10 @@ public class PlayerController : MonoBehaviour
         else{
             animator.SetBool("isWalking",false);
         }
-
+        if(!isAttacking){
         moveDirection.x = Input.GetAxis("Horizontal"); // recupera valor dos controles
         moveDirection.x *= walkSpeed;
+        }
 
         if(moveDirection.x < 0){
             transform.eulerAngles = new Vector3(0,180,0);
