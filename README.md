@@ -2,6 +2,7 @@
 ###### Guilherme Leite
 
 </br>
+Deployment: https://guipleite.github.io/2D-Plataformer/
 
 2D plataform game made with unity
 </br>
