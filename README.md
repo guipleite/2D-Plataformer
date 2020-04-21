@@ -1,10 +1,11 @@
 ###### Guilherme Leite
-<div style="text-align:center"><img src="./2DPlat/Assets/Menus/MainTitle.png" /></div>
+<p align="center"><img src="./2DPlat/Assets/Menus/MainTitle.png" /></p>
 
-Deployment: https://guipleite.github.io/2D-Plataformer/
 2D plataform game made with unity
 
+Deployment: https://guipleite.github.io/2D-Plataformer/
 </br>
+
 Movimento: S,D
 
 Pulo: Barra de Espaço
