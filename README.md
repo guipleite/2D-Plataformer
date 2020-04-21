@@ -13,6 +13,7 @@ Ataque: Botão esquerdo do mouse
 
 O objetivo é pegar a moeda, se o jogador cair do mapa ou na água ele morre. Ele também pode quebrar caixas.
 </br>
+
 ![alt text](./SCfirst_screen.JPG)
 </br></br>
 
