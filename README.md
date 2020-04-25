@@ -5,12 +5,13 @@
 
 Deployment: https://guipleite.github.io/2D-Plataformer/
 </br>
+Controles:
 
-Movimento: A,D
+    Movimento: A,D
 
-Pulo: Barra de Espaço
+    Pulo: Barra de Espaço
 
-Ataque: Botão esquerdo do mouse
+    Ataque: Botão esquerdo do mouse
 
 O objetivo é pegar a moeda, se o jogador cair do mapa ou na água ele morre. Ele também pode quebrar caixas.
 </br>
