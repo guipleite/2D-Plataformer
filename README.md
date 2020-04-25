@@ -6,7 +6,7 @@
 Deployment: https://guipleite.github.io/2D-Plataformer/
 </br>
 
-Movimento: S,D
+Movimento: A,D
 
 Pulo: Barra de Espaço
 Ataque: Botão esquerdo do mouse
